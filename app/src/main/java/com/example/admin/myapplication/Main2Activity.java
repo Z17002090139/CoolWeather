@@ -2,25 +2,21 @@ package com.example.admin.myapplication;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.TextView;
 
 import java.io.IOException;
 
 import okhttp3.Response;
 
-public class MainActivity extends AppCompatActivity {
-
+public class Main2Activity extends AppCompatActivity {
     private TextView textView;
-    private Button button;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        this.textView=findViewById(R.id.abc);
-
-        String weatherId="CN101210701";
-        String weatherUrl = "http://guolin.tech/api/weather?cityid=" + weatherId + "&key=782a428345a54209bd6a3e2f746ee3d6";
+        setContentView(R.layout.activity_main2);
+        this.textView=findViewById(R.id.textView);
+        String weatherUrl = "http://guolin.tech/api/china";
         HttpUtil.sendOkHttpRequest(weatherUrl, new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
@@ -38,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
                 });
                 textView.setText(responseText);
             }
-
-        });
+            });
     }
 }
