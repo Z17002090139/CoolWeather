@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/button1"
-        android:text="单击"
+        android:text="浙江省"
         />
 
 </android.support.constraint.ConstraintLayout>

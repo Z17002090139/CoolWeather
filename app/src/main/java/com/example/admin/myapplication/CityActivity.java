@@ -11,22 +11,20 @@ import java.io.IOException;
 
 import okhttp3.Response;
 
-public class Main2Activity extends AppCompatActivity {
+public class CityActivity extends AppCompatActivity {
+    private Button button2;
     private TextView textView;
-    private Button button1;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
-        this.textView=findViewById(R.id.textView);
-        String weatherUrl = "http://guolin.tech/api/china";
-        Button button1=(Button) findViewById(R.id.button1);
-        button1.setOnClickListener(new View.OnClickListener() {
+        setContentView(R.layout.activity_city);
+        String weatherUrl = "http://guolin.tech/api/china/17";
+        Button button2=(Button) findViewById(R.id.button2);
+        button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(Main2Activity.this,CityActivity.class);
+                Intent intent=new Intent(CityActivity.this,MainActivity.class);
                 startActivity(intent);
             }
         });
@@ -46,6 +44,6 @@ public class Main2Activity extends AppCompatActivity {
                     }
                 });
             }
-            });
+        });
     }
 }
