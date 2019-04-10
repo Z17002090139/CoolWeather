@@ -1,7 +1,11 @@
 package com.example.admin.myapplication;
 
+import android.content.Intent;
+import android.os.PersistableBundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -12,12 +16,12 @@ import okhttp3.Response;
 public class MainActivity extends AppCompatActivity {
 
     private TextView textView;
-    private Button button;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.textView=findViewById(R.id.abc);
+
 
         String weatherId="CN101210701";
         String weatherUrl = "http://guolin.tech/api/weather?cityid=" + weatherId + "&key=782a428345a54209bd6a3e2f746ee3d6";
@@ -36,9 +40,9 @@ public class MainActivity extends AppCompatActivity {
                         textView.setText(responseText);
                     }
                 });
-                textView.setText(responseText);
             }
 
         });
     }
+
 }
