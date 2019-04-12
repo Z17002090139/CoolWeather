@@ -20,6 +20,8 @@ public class CityActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_city);
         String weatherUrl = "http://guolin.tech/api/china/17";
+        this.textView=findViewById(R.id.textcity);
+
         Button button2=(Button) findViewById(R.id.button2);
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
