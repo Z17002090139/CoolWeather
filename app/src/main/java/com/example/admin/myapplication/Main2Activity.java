@@ -3,7 +3,9 @@ package com.example.admin.myapplication;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -14,15 +16,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.Response;
 
 public class Main2Activity extends AppCompatActivity {
     private TextView textView;
-    private Button button1;
-    private String[] data = {"北京", "浙江", "上海"};
+    private String[] data = {"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""};
     private ListView listview;
-//    private String[] resilt;
+    private List<String> data2=new ArrayList();
 
 
     @Override
@@ -31,18 +34,16 @@ public class Main2Activity extends AppCompatActivity {
         setContentView(R.layout.activity_main2);
         this.textView = findViewById(R.id.textView);
         this.listview = (ListView) findViewById(R.id.list_view);
-        Button button1 = (Button) findViewById(R.id.button1);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(Main2Activity.this, android.R.layout.simple_list_item_1, data);
         listview.setAdapter(adapter);
-
-        button1.setOnClickListener(new View.OnClickListener() {
+        this.listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Main2Activity.this, CityActivity.class);
-                startActivity(intent);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.v("点击了",""+position);
             }
         });
+
 
         String weatherUrl = "http://guolin.tech/api/china";
         HttpUtil.sendOkHttpRequest(weatherUrl, new okhttp3.Callback() {
@@ -50,6 +51,8 @@ public class Main2Activity extends AppCompatActivity {
             public void onResponse(okhttp3.Call call, Response response) throws IOException {
                 final String responseText = response.body().string();
                 String[] result = parseJSONObject(responseText);
+                Main2Activity.this.data=result;
+
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -72,10 +75,12 @@ public class Main2Activity extends AppCompatActivity {
             jsonArray = new JSONArray(responseText);
             String[] result = new String[jsonArray.length()];
             for (int i = 0; i<jsonArray.length(); i++) {
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                result[i] = jsonObject.getString("name");
-                return result;
+                JSONObject jsonObject = null;
+                jsonObject= jsonArray.getJSONObject(i);
+                this.data[i]=jsonObject.getString("name");
+
         }
+            return result;
         } catch (JSONException e) {
             e.printStackTrace();
         }
