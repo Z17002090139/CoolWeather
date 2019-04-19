@@ -22,10 +22,12 @@ import java.util.List;
 import okhttp3.Response;
 
 public class Main2Activity extends AppCompatActivity {
+
+    private List<String> data2=new ArrayList();
+    private int[] pids=new int[]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
     private TextView textView;
     private String[] data = {"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""};
     private ListView listview;
-    private List<String> data2=new ArrayList();
 
 
     @Override
@@ -40,7 +42,9 @@ public class Main2Activity extends AppCompatActivity {
         this.listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.v("点击了",""+position);
+                Intent intent=new Intent(Main2Activity.this,CityActivity.class);
+                intent.putExtra("pid",Main2Activity.this.pids[position]);
+                startActivity(intent);
             }
         });
 
@@ -50,9 +54,7 @@ public class Main2Activity extends AppCompatActivity {
             @Override
             public void onResponse(okhttp3.Call call, Response response) throws IOException {
                 final String responseText = response.body().string();
-                String[] result = parseJSONObject(responseText);
-                Main2Activity.this.data=result;
-
+                parseJSONObject(responseText);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -69,7 +71,7 @@ public class Main2Activity extends AppCompatActivity {
         });
     }
 
-    private String[] parseJSONObject(String responseText) {
+    private void parseJSONObject(String responseText) {
         JSONArray jsonArray = null;
         try {
             jsonArray = new JSONArray(responseText);
@@ -78,13 +80,12 @@ public class Main2Activity extends AppCompatActivity {
                 JSONObject jsonObject = null;
                 jsonObject= jsonArray.getJSONObject(i);
                 this.data[i]=jsonObject.getString("name");
+                this.pids[i]=jsonObject.getInt("id");
 
         }
-            return result;
         } catch (JSONException e) {
             e.printStackTrace();
         }
-            return null;
     }
 
 }
