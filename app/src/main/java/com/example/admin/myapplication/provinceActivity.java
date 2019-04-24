@@ -3,11 +3,9 @@ package com.example.admin.myapplication;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -21,7 +19,7 @@ import java.util.List;
 
 import okhttp3.Response;
 
-public class Main2Activity extends AppCompatActivity {
+public class provinceActivity extends AppCompatActivity {
 
     private List<String> data2=new ArrayList();
     private int[] pids=new int[]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
@@ -37,13 +35,13 @@ public class Main2Activity extends AppCompatActivity {
         this.textView = findViewById(R.id.textView);
         this.listview = (ListView) findViewById(R.id.list_view);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(Main2Activity.this, android.R.layout.simple_list_item_1, data);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(provinceActivity.this, android.R.layout.simple_list_item_1, data);
         listview.setAdapter(adapter);
         this.listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent=new Intent(Main2Activity.this,CityActivity.class);
-                intent.putExtra("pid",Main2Activity.this.pids[position]);
+                Intent intent=new Intent(provinceActivity.this,CityActivity.class);
+                intent.putExtra("pid",provinceActivity.this.pids[position]);
                 startActivity(intent);
             }
         });

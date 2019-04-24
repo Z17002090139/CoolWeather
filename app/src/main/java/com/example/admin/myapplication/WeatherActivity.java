@@ -13,7 +13,7 @@ import java.io.IOException;
 
 import okhttp3.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class WeatherActivity extends AppCompatActivity {
 
     private TextView textView;
     @Override
@@ -21,11 +21,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Intent intent=getIntent();
-
         this.textView=findViewById(R.id.abc);
-
-
-        String weatherId="CN101210701";
+        Intent intent1=getIntent();
+        String  weatherId=intent1.getStringExtra("weatherId");
         String weatherUrl = "http://guolin.tech/api/weather?cityid=" + weatherId + "&key=782a428345a54209bd6a3e2f746ee3d6";
         HttpUtil.sendOkHttpRequest(weatherUrl, new okhttp3.Callback() {
             @Override
