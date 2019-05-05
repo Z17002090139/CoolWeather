@@ -24,8 +24,8 @@ public class CountryActivity extends AppCompatActivity {
     private List<String> data2=new ArrayList();
     private TextView textView;
     private ListView listView;
-    private String weatherId;
-    private String[] countydata = {"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""};
+    private String[] wId={" "," "," "," "," "," "," "," "," "," "," "," "};
+    private List<String> data = new ArrayList<>();
     private int[] countypids=new int[]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
 
@@ -34,20 +34,18 @@ public class CountryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_count);
         Intent intent1=getIntent();
-        int cid=intent1.getIntExtra("citypids",0);
+        int cid=intent1.getIntExtra("cityids",0);
         int pid=intent1.getIntExtra("pid",0);
         String weatherUrl = "http://guolin.tech/api/china/"+pid+"/"+cid;
         this.textView=findViewById(R.id.textcounty);
-
         this.listView=findViewById(R.id.countrylist_view);
-
-        ArrayAdapter<String> adapter=new ArrayAdapter<>(CountryActivity.this,android.R.layout.simple_list_item_1,countydata);
+        final ArrayAdapter<String> adapter=new ArrayAdapter<>(CountryActivity.this,android.R.layout.simple_list_item_1,data);
         listView.setAdapter(adapter);
         this.listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent=new Intent(CountryActivity.this,WeatherActivity.class);
-                intent.putExtra("weatherId",CountryActivity.this.weatherId);
+                intent.putExtra("weatherId",CountryActivity.this.wId[position]);
                 startActivity(intent);
             }
         });
@@ -61,6 +59,8 @@ public class CountryActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         textView.setText(responseText);
+                        adapter.notifyDataSetChanged();
+
                     }
                 });
             }
@@ -70,18 +70,20 @@ public class CountryActivity extends AppCompatActivity {
 
             }
         });
+
     }
     private void parseJSONObject(String responseText) {
         JSONArray jsonArray = null;
+        this.data.clear();
         try {
             jsonArray = new JSONArray(responseText);
             String[] result = new String[jsonArray.length()];
             for (int i = 0; i<jsonArray.length(); i++) {
                 JSONObject jsonObject = null;
                 jsonObject= jsonArray.getJSONObject(i);
-                this.countydata[i]=jsonObject.getString("name");
+                this.data.add(jsonObject.getString("name"));
                 this.countypids[i]=jsonObject.getInt("id");
-                this.weatherId=jsonObject.getString("weather_id");
+                this.wId[i]=jsonObject.getString("weather_id");
             }
         } catch (JSONException e) {
             e.printStackTrace();

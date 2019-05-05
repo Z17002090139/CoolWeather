@@ -20,11 +20,10 @@ public class WeatherActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Intent intent=getIntent();
         this.textView=findViewById(R.id.abc);
-        Intent intent1=getIntent();
-        String  weatherId=intent1.getStringExtra("weatherId");
-        String weatherUrl = "http://guolin.tech/api/weather?cityid=" + weatherId + "&key=782a428345a54209bd6a3e2f746ee3d6";
+        String  weatherId=getIntent().getStringExtra("weatherId");
+        String weatherUrl = "http://guolin.tech/api/weather?cityid=" + weatherId ;
+//                + "&key=782a428345a54209bd6a3e2f746ee3d6";
         HttpUtil.sendOkHttpRequest(weatherUrl, new okhttp3.Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
