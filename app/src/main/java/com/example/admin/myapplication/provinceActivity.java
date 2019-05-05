@@ -39,7 +39,6 @@ public class provinceActivity extends AppCompatActivity {
         this.textView = findViewById(R.id.textView);
         this.listview = (ListView) findViewById(R.id.list_view);
 
-        String weatherUrl =currentlevel=="city"?"http://guolin.tech/api/china/"+pid:"http://guolin.tech/api/china/";
 //        String weatherUrl = "http://guolin.tech/api/china";
 
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(provinceActivity.this, android.R.layout.simple_list_item_1, data);
@@ -49,12 +48,6 @@ public class provinceActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 pid=provinceActivity.this.pids[position];
                 currentlevel="city";
-                String weatherUrl =currentlevel=="city"?"http://guolin.tech/api/china/"+pid:"http://guolin.tech/api/china/";
-                try {
-                    getData(weatherUrl, adapter);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
 
 
 //                Intent intent = new Intent(provinceActivity.this, CityActivity.class);
@@ -69,7 +62,8 @@ public class provinceActivity extends AppCompatActivity {
 
     }
 
-    private void getData(String weatherUrl, final ArrayAdapter<String> adapter) throws IOException {
+    private void getData(final ArrayAdapter<String> adapter) throws IOException {
+        String weatherUrl =currentlevel=="city"?"http://guolin.tech/api/china/"+pid:"http://guolin.tech/api/china/";
         HttpUtil.sendOkHttpRequest(weatherUrl, new okhttp3.Callback() {
             @Override
             public void onResponse(okhttp3.Call call, Response response) throws IOException {
