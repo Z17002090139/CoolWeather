@@ -20,7 +20,7 @@
         </activity>
         <activity android:name=".WeatherActivity" />
         <!--<activity android:name=".CityActivity" />-->
-        <activity android:name=".CountryActivity"></activity>
+        <!--<activity android:name=".CountryActivity"></activity>-->
     </application>
 
 </manifest>
