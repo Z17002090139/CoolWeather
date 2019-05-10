@@ -76,7 +76,7 @@ public class provinceActivity extends AppCompatActivity {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    currentlevel="weather";
+
                     Intent intent=new Intent(provinceActivity.this,WeatherActivity.class);
                     intent.putExtra("weatherId",provinceActivity.this.wIds.get(position));
                     startActivity(intent);
@@ -109,9 +109,10 @@ public class provinceActivity extends AppCompatActivity {
     }
     else if(currentlevel== COUNTRY){
         weatherUrl = "http://guolin.tech/api/china/"+pid+"/"+cityid;
-    }else if(currentlevel=="weather"){
-
     }
+//    else if(currentlevel=="weather"){
+//
+//    }
 
 
         HttpUtil.sendOkHttpRequest(weatherUrl, new okhttp3.Callback() {
