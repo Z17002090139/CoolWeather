@@ -1,13 +1,12 @@
 package com.example.admin.myapplication;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,18 +19,20 @@ import java.util.List;
 import okhttp3.Response;
 
 public class provinceActivity extends AppCompatActivity {
+    public static final String PROVINCE = "province";
+    public static final String CITY = "city";
+    public static final String COUNTRY = "country";
 
 //    private int[] pids = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 //    private int[] cityids = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 //    private String[] wIds={" "," "," "," "," "," "," "," "," "," "," "," "};
 
     //当前层级：province，city，country
-    private String currentlevel="province";
+    private String currentlevel= PROVINCE;
     private int pid=0;//当前选中省的id
     private int cityid=0;//当前选中城市的id
     private String Wid;
     private List<Integer> pids=new ArrayList<>();
-    private List<Integer> cityids=new ArrayList<>();
     private List<String> data = new ArrayList<>();
     private List<String> wIds = new ArrayList<>();
     private ListView listview;
@@ -49,32 +50,42 @@ public class provinceActivity extends AppCompatActivity {
         this.listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(currentlevel == "province"){
+                if(currentlevel == PROVINCE){
                     pid=provinceActivity.this.pids.get(position);
-                    currentlevel="city";
+                    currentlevel= CITY;
                     try {
                         getData(adapter);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
-                else if (currentlevel=="city"){
-                    cityid=provinceActivity.this.cityids.get(position);
-                    currentlevel="country";
+                else if (currentlevel== CITY){
+                    cityid=provinceActivity.this.pids.get(position);
+                    currentlevel= COUNTRY;
+
                     try {
                         getData(adapter);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                }else if (currentlevel=="country"){
+
+                }else if (currentlevel== COUNTRY){
                     Wid=provinceActivity.this.wIds.get(position);
-                    currentlevel="weather";
                     try {
                         getData(adapter);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                    currentlevel="weather";
+                    Intent intent=new Intent(provinceActivity.this,WeatherActivity.class);
+                    intent.putExtra("weatherId",provinceActivity.this.wIds.get(position));
+                    startActivity(intent);
                 }
+//                else if(currentlevel=="weather") {
+//                    Intent intent=new Intent(provinceActivity.this,WeatherActivity.class);
+//                    intent.putExtra("weatherId",provinceActivity.this.wIds.get(position));
+//                    startActivity(intent);
+//                }
 
 
             }
@@ -89,19 +100,20 @@ public class provinceActivity extends AppCompatActivity {
     }
 
     private void getData(final ArrayAdapter<String> adapter) throws IOException {
-        String weatherUrl;
-    if(currentlevel=="city"){
+        String weatherUrl = null;
+    if(currentlevel== PROVINCE) {
+            weatherUrl = "http://guolin.tech/api/china/";
+        }
+    else if(currentlevel== CITY){
         weatherUrl="http://guolin.tech/api/china/"+pid;
     }
-    else if(currentlevel=="country"){
+    else if(currentlevel== COUNTRY){
         weatherUrl = "http://guolin.tech/api/china/"+pid+"/"+cityid;
+    }else if(currentlevel=="weather"){
+
     }
-    else if(currentlevel=="weather"){
-        weatherUrl = "http://guolin.tech/api/weather?cityid=" + Wid  + "&key=782a428345a54209bd6a3e2f746ee3d6";
-        }
-    else {
-        weatherUrl = "http://guolin.tech/api/china/";
-    }
+
+
         HttpUtil.sendOkHttpRequest(weatherUrl, new okhttp3.Callback() {
             @Override
             public void onResponse(okhttp3.Call call, Response response) throws IOException {
@@ -129,7 +141,6 @@ public class provinceActivity extends AppCompatActivity {
         JSONArray jsonArray = null;
         this.data.clear();
         this.pids.clear();
-        this.cityids.clear();
         this.wIds.clear();
         try {
             jsonArray = new JSONArray(responseText);
@@ -137,14 +148,11 @@ public class provinceActivity extends AppCompatActivity {
                 JSONObject jsonObject = null;
                 jsonObject = jsonArray.getJSONObject(i);
                 this.data.add(jsonObject.getString("name"));
-                if (currentlevel=="city"){
-                    this.cityids.add(jsonObject.getInt("id"));
-                }else if(currentlevel=="country"){
+                this.pids.add(jsonObject.getInt("id"));
+                 if(currentlevel== COUNTRY){
                     this.wIds.add(jsonObject.getString("weather_id"));
                 }
-                else {
-                    this.pids.add(jsonObject.getInt("id"));
-                }
+
             }
         } catch (JSONException e) {
             e.printStackTrace();
